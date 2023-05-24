@@ -5,6 +5,9 @@ class ProductCategory(models.Model):
     name = models.CharField(max_length=128, null=False, unique=True)
     description = models.TextField(null=True, blank=True)
 
+    def __str__(self):
+        return self.name
+
 
 
 class Product(models.Model):
@@ -14,3 +17,6 @@ class Product(models.Model):
     image = models.ImageField(upload_to='products_images')
     quantity = models.PositiveIntegerField()
     category = models.ForeignKey(to=ProductCategory, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f"Name : {self.name} | Category : {self.category}"
