@@ -19,6 +19,16 @@ class UserRegistrationForm(UserCreationForm):
         model = User
         fields = ('first_name', 'last_name', 'username', 'email', 'password1', 'password2')
 
+    first_name = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control py-4', 'placeholder': 'Enter your first name'}))
+    last_name = forms.CharField(
+        widget=forms.TextInput(attrs={'class': 'form-control py-4', 'placeholder': 'Enter your last name'}))
+    username = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control py-4', 'placeholder': 'Enter a username'}))
+    email = forms.EmailField(
+        widget=forms.EmailInput(attrs={'class': 'form-control py-4', 'placeholder': 'Enter your e-mail'}))
+    password1 = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'form-control py-4', 'placeholder': 'Enter a password'}))
+    password2 = forms.CharField(
+        widget=forms.PasswordInput(attrs={'class': 'form-control py-4', 'placeholder': 'Enter the password again'}))
+
 # class UserProfileForm(UserChangeForm):
 #     class Meta:
 #         model = User
