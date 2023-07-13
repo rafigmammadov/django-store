@@ -1,4 +1,5 @@
 from django.shortcuts import render, HttpResponseRedirect
+from django.contrib.auth.decorators import login_required
 from .models import ProductCategory, Product, Basket
 
 
@@ -19,6 +20,7 @@ def products(request):
     return render(request, 'products/products.html', context)
 
 
+@login_required
 def basket_add(request, product_id):
     product = Product.objects.get(id=product_id)
     baskets = Basket.objects.filter(user=request.user, product=product)
