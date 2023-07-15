@@ -1,6 +1,7 @@
 from django.shortcuts import render, HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 from .models import ProductCategory, Product, Basket
+from django.db.models import F
 
 
 def index(request):
@@ -11,11 +12,12 @@ def index(request):
     return render(request, 'products/index.html', context)
 
 
-def products(request):
+def products(request, category_id=None):
+
     context = {
         'title': 'Rafistore-Catalog',
-        'products': Product.objects.all(),
         'categories': ProductCategory.objects.all(),
+        'products': Product.objects.filter(category=category_id) if category_id else Product.objects.all()
     }
     return render(request, 'products/products.html', context)
 
