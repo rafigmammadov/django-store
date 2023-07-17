@@ -1,10 +1,12 @@
 from django.shortcuts import render
 from django.http import HttpResponseRedirect
 from users.forms import UserLoginForm, UserRegistrationForm, UserProfileForm
-from django.contrib.auth.decorators import login_required
-from django.urls import reverse
+from django.views.generic.edit import CreateView, UpdateView
+from django.urls import reverse, reverse_lazy
 from django.contrib import auth
 from products.models import Basket
+from users.models import User
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 
 
 def login(request):
@@ -25,37 +27,31 @@ def login(request):
     return render(request, 'users/login.html', context)
 
 
-def register(request):
-    if request.method == "POST":
-        form = UserRegistrationForm(data=request.POST)
-        if form.is_valid():
-            form.save()
-            return HttpResponseRedirect(reverse('users:login'))
-    else:
-        form = UserRegistrationForm()
-
-    context = {'form': form}
-
-    return render(request, 'users/register.html', context)
+class RegisterCreateView(CreateView):
+    model = User
+    template_name = 'users/register.html'
+    form_class = UserRegistrationForm
+    success_url = reverse_lazy('users:login')
 
 
-@login_required
-def profile(request):
-    if request.method == "POST":
-        form = UserProfileForm(instance=request.user, data=request.POST, files=request.FILES)
-        if form.is_valid():
-            form.save()
-            return HttpResponseRedirect(reverse('users:profile'))
-    else:
-        form = UserProfileForm(instance=request.user)
+class ProfilUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+    model = User
+    template_name = 'users/profile.html'
+    form_class = UserProfileForm
 
-    context = {
-        'form': form,
-        'title': 'Profile',
-        'baskets': Basket.objects.filter(user=request.user)
-    }
+    def get_success_url(self):
+        return reverse_lazy('users:profile', args=(self.object.id))
 
-    return render(request, 'users/profile.html', context)
+    def get_context_data(self, **kwargs):
+        context = super(ProfilUpdateView, self).get_context_data()
+        context['title'] = 'Rafistore-Profile'
+        context['baskets'] = Basket.objects.filter(user=self.object)
+        return context
+
+    def test_func(self):
+        return self.request.user == self.get_object()
+
+
 
 
 def logout(request):

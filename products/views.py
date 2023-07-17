@@ -1,9 +1,9 @@
-from django.shortcuts import render, HttpResponseRedirect
+from django.shortcuts import HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 from .models import ProductCategory, Product, Basket
-from django.core.paginator import Paginator
 from django.views.generic.base import TemplateView
 from django.views.generic.list import ListView
+
 
 class IndexView(TemplateView):
     template_name = 'products/index.html'
@@ -14,11 +14,11 @@ class IndexView(TemplateView):
         context['is_promote'] = True
         return context
 
+
 class ProductListView(ListView):
     model = Product
     paginate_by = 3
     template_name = 'products/products.html'
-
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super(ProductListView, self).get_context_data()
@@ -30,20 +30,6 @@ class ProductListView(ListView):
         queryset = super(ProductListView, self).get_queryset()
         category_id = self.kwargs.get('category_id')
         return queryset.filter(category=category_id) if category_id else queryset
-
-
-
-# def products(request, category_id=None, page=1):
-#     products = Product.objects.filter(category=category_id) if category_id else Product.objects.all()
-#     paginator = Paginator(products, 3)
-#     products_paginator = paginator.page(page)
-#
-#     context = {
-#         'title': 'Rafistore-Catalog',
-#         'categories': ProductCategory.objects.all(),
-#         'products': products_paginator,
-#     }
-#     return render(request, 'products/products.html', context)
 
 
 @login_required
