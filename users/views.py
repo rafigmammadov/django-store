@@ -34,6 +34,9 @@ class RegisterCreateView(CreateView):
     success_url = reverse_lazy('users:login')
 
 
+
+
+
 class ProfilUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = User
     template_name = 'users/profile.html'
