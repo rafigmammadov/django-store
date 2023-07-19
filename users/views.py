@@ -2,10 +2,11 @@ from django.shortcuts import render
 from django.http import HttpResponseRedirect
 from users.forms import UserLoginForm, UserRegistrationForm, UserProfileForm
 from django.views.generic.edit import CreateView, UpdateView
+from django.views.generic.base import TemplateView
 from django.urls import reverse, reverse_lazy
 from django.contrib import auth
 from products.models import Basket
-from users.models import User
+from users.models import User, EmailVerification
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 
 
@@ -31,9 +32,9 @@ class RegisterCreateView(CreateView):
     model = User
     template_name = 'users/register.html'
     form_class = UserRegistrationForm
-    success_url = reverse_lazy('users:login')
 
-
+    def get_success_url(self):
+        return reverse_lazy('users:login')
 
 
 
@@ -53,6 +54,19 @@ class ProfilUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
 
     def test_func(self):
         return self.request.user == self.get_object()
+
+class EmailVerificationView(TemplateView):
+    model = EmailVerification
+
+    def get(self, request, *args, **kwargs):
+        code = kwargs['code']
+        email = User.objects.get(email=kwargs['email'])
+        email_verifiications = EmailVerification.objects.filter(user=user, code=code)
+
+        if email_verifiications.exists():
+            user.is_verified_email = True
+            user.save()
+            return super(EmailVerificationView, self).get(request, *args, **kwargs)
 
 
 
