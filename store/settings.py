@@ -41,6 +41,13 @@ INSTALLED_APPS = [
     'products',
     'users',
 
+    'django.contrib.sites',
+
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.github',
+
 ]
 
 MIDDLEWARE = [
@@ -89,7 +96,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'store_db',
         'USER': 'store_username',
-        'PASSWORD': 'store_password',
+        'PASSWORD': 'storepassword',
         'HOST': 'localhost',
         'PORT': '5432',
     }
@@ -147,3 +154,10 @@ AUTH_USER_MODEL = 'users.User'
 LOGIN_URL = '/users/login'
 
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend',
+]
+
+SITE_ID = 1
