@@ -1,9 +1,10 @@
-from django.urls import path
+from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib.auth.decorators import login_required
-from django.conf import settings
+from django.urls import path
 
-from users.views import login, RegisterCreateView, ProfilUpdateView, EmailVerificationView, logout
+from users.views import (EmailVerificationView, ProfilUpdateView,
+                         RegisterCreateView, login, logout)
 
 app_name = 'users'
 
