@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    'orders',
     'products',
     'users',
 
@@ -89,14 +90,7 @@ INTERNAL_IPS = [
 ]
 
 # Database
-# https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
-#     }
-# }
 
 DATABASES = {
     'default': {
@@ -167,7 +161,7 @@ EMAIL_HOST_USER = 'storedjango@outlook.com'
 EMAIL_HOST_PASSWORD = 'Rafiq123#'
 EMAIL_USE_TLS = True
 
-#OAuth
+# OAuth
 
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',

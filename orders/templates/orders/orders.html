@@ -1,0 +1,60 @@
+{% extends 'products/base.html' %}
+{% load static %}
+
+    <!-- Custom styles for this template -->
+{% block css %}
+    <link href="{% static 'vendor/css/orders.css' %}" rel="stylesheet">
+{% endblock %}
+
+<!-- Page Content -->
+{% block content %}
+<section>
+    <div class="container pt-5">
+        <div class="text-center mt-5">
+            <h1>Orders</h1>
+            <div class="orders mt-5">
+                <table class="table">
+                    <thead>
+                    <tr class="table-light">
+                        <th scope="col">#</th>
+                        <th scope="col">Status</th>
+                        <th scope="col">Created</th>
+                        <th scope="col">Total price</th>
+                        <th scope="col">Action</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <th scope="row">1</th>
+                        <td>Paid</td>
+                        <td>21 авг. 21 года</td>
+                        <td>5 070 руб.</td>
+                        <td>
+                            <a href="order.html">show</a>
+                        </td>
+                    </tr>
+                    <tr class="table-success">
+                        <th scope="row">2</th>
+                        <td>Досталвен</td>
+                        <td>16 июля 21 года</td>
+                        <td>4 876 руб.</td>
+                        <td>
+                            <a href="order.html">show</a>
+                        </td>
+                    </tr>
+                    <tr class="table-info">
+                        <th scope="row">3</th>
+                        <td>В пути</td>
+                        <td>14 нояб. 21 года</td>
+                        <td>9 566 руб.</td>
+                        <td>
+                            <a href="order.html">show</a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
