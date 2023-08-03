@@ -96,10 +96,22 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'store_db',
-        'USER': 'store_username',
-        'PASSWORD': 'storepassword',
+        'USER': 'store_user',
+        'PASSWORD': 'store_password',
         'HOST': 'localhost',
         'PORT': '5432',
+    }
+}
+
+# Caches
+
+CACHES = {
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": "redis://127.0.0.1:6379/1",
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+        }
     }
 }
 

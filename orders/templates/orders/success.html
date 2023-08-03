@@ -1,4 +1,5 @@
 {% extends 'users/base.html' %}
+{% load static %}
 
 {% block title %}
 <title> Store - Order</title>
@@ -13,7 +14,7 @@
     <meta name="description" content=""/>
     <meta name="author" content=""/>
     <title>Store - Thanks for your order!</title>
-    <link href="../vendor/css/auth.css" rel="stylesheet"/>
+    <link href="{% static 'vendor/css/auth.css' %}" rel="stylesheet"/>
 </head>
 <body class="bg-primary">
 <div id="layoutAuthentication">
@@ -24,11 +25,11 @@
                     <div class="col-lg-5">
                         <div class="card shadow-lg border-0 rounded-lg mt-5">
                             <div class="card-header">
-                                <h3 class="text-center font-weight-light my-4">Спасибо за заказ!</h3>
+                                <h3 class="text-center font-weight-light my-4">Thank you for the order!</h3>
                             </div>
                             <div class="card-body text-center">
                                 <h4>
-                                    Ваш заказ успешно сформирован.
+                                    Your order has been successfully created.
                                 </h4>
                             </div>
                         </div>
