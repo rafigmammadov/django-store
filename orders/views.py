@@ -10,9 +10,9 @@ from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView
 from django.views.generic.list import ListView
 
-from products.models import Basket
 from orders.forms import OrderCreateForm
 from orders.models import Order
+from products.models import Basket
 
 
 class CreateOrderTemplateView(CreateView):
@@ -58,17 +58,16 @@ def stripe_webhook_view(request):
     payload = request.body
     event = None
     sig_header = request.META['HTTP_STRIPE_SIGNATURE']
-    webhook_secret = settings.STRIPE_WEBHOOK_SECRET
     print(payload)
 
     try:
         event = stripe.Webhook.construct_event(
             payload, sig_header, settings.STRIPE_WEBHOOK_SECRET
         )
-    except ValueError as e:
+    except ValueError:
         # Invalid payload
         return HttpResponse(status=400)
-    except stripe.error.SignatureVerificationError as e:
+    except stripe.error.SignatureVerificationError:
         # Invalid signature
         return HttpResponse(status=400)
 
@@ -97,7 +96,7 @@ class OrderDetailView(DetailView):
 class OrdersListView(ListView):
     template_name = 'orders/orders.html'
     queryset = Order.objects.all()
-    ordering = ('-id')
+    ordering = '-id'
 
     def get_queryset(self):
         queryset = super(OrdersListView, self).get_queryset()

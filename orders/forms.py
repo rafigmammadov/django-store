@@ -19,4 +19,6 @@ class OrderCreateForm(ModelForm):
     email = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Type your email '
                                                                                                   'address'}),
                             required=True)
-    address = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Type your address'}), required=True)
+    address = forms.CharField(
+        widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Type your address'})
+        , required=True)

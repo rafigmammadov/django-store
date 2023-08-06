@@ -1,8 +1,7 @@
 from django.urls import path
 
 from orders.views import (CanceledTemplateView, CreateOrderTemplateView,
-                          OrdersListView, OrderDetailView,
-                          SuccessTemplateView)
+                          OrderDetailView, OrdersListView, SuccessTemplateView)
 
 app_name = 'orders'
 
