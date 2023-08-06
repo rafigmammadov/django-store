@@ -39,3 +39,5 @@ class ProductListTestView(TestCase):
 
 
         self.assertEqual(list(response.context_data['object_list']), list(self.products.filter(category_id=self.category.id)))
+
+

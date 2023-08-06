@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Quick-start development settings - unsuitable for production
@@ -133,6 +134,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
 
@@ -182,5 +184,6 @@ AUTHENTICATION_BACKENDS = [
 
 SITE_ID = 1
 
-STRIPE_SECRET_KEY = 'sk_test_51NbL0lHq11uemsKDWBt3UyyvD6QtVNjKgxOtY23NtI843vKPuk7yVJdmGOdGNzVmd8dHmwrNEcszwu3KJEFoQqFY00rLuyg8xv'
-STRIPE_PUBLIC_KEY = 'pk_test_51NbL0lHq11uemsKDPnkTc9IVyxtqNGwXCwTrsRVSEtj9WWRenQjEJ1BgxG9XWWjwrKDPqPzcP2EmlT4Kr3AnpsW600C6TJTy64'
+STRIPE_SECRET_KEY = 'sk_test_51NbL0lHq11uemsKDWBt3UyyvD6QtVNjKgxOtY23NtI843vKPuk7yVJdmGOdGNzVmd8dHmwrNEcszwu3KJEFoQqFY00rLuyg8xv '
+STRIPE_PUBLIC_KEY = 'pk_test_51NbL0lHq11uemsKDPnkTc9IVyxtqNGwXCwTrsRVSEtj9WWRenQjEJ1BgxG9XWWjwrKDPqPzcP2EmlT4Kr3AnpsW600C6TJTy64 '
+STRIPE_WEBHOOK_SECRET = 'whsec_ce0aca6f3aba3ff05205b0f152b50210717d8b3a98b4cf05ace4de583c35fa31'

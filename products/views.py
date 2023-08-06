@@ -3,7 +3,7 @@ from django.shortcuts import HttpResponseRedirect
 from django.views.generic.base import TemplateView
 from django.views.generic.list import ListView
 
-from .models import Basket, Product, ProductCategory
+from products.models import Basket, Product, ProductCategory
 
 
 class IndexView(TemplateView):
