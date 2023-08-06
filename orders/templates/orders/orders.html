@@ -1,5 +1,6 @@
 {% extends 'products/base.html' %}
-{% load static %}
+{% load static humanize %}
+
 
     <!-- Custom styles for this template -->
 {% block css %}
@@ -16,7 +17,7 @@
                 <table class="table">
                     <thead>
                     <tr class="table-light">
-                        <th scope="col">#</th>
+                        <th scope="col">№</th>
                         <th scope="col">Status</th>
                         <th scope="col">Created</th>
                         <th scope="col">Total price</th>
@@ -24,33 +25,17 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr>
-                        <th scope="row">1</th>
-                        <td>Paid</td>
-                        <td>21 авг. 21 года</td>
-                        <td>5 070 руб.</td>
+                    {% for order in object_list %}
+                        <tr>
+                        <th scope="row">{{ order.id }}</th>
+                        <td>{{ order.get_status_display }}</td>
+                        <td>{{ order.created | naturaltime }} </td>
+                        <td>{{ order.basket_history.total_sum | intcomma }} $</td>
                         <td>
-                            <a href="order.html">show</a>
+                            <a href="{% url 'orders:order_detail' order.id %}">Show details</a>
                         </td>
                     </tr>
-                    <tr class="table-success">
-                        <th scope="row">2</th>
-                        <td>Досталвен</td>
-                        <td>16 июля 21 года</td>
-                        <td>4 876 руб.</td>
-                        <td>
-                            <a href="order.html">show</a>
-                        </td>
-                    </tr>
-                    <tr class="table-info">
-                        <th scope="row">3</th>
-                        <td>В пути</td>
-                        <td>14 нояб. 21 года</td>
-                        <td>9 566 руб.</td>
-                        <td>
-                            <a href="order.html">show</a>
-                        </td>
-                    </tr>
+                    {% endfor %}
                     </tbody>
                 </table>
             </div>

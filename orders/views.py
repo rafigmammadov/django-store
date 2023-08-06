@@ -6,7 +6,9 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse, reverse_lazy
 from django.views.decorators.csrf import csrf_exempt
 from django.views.generic.base import TemplateView
+from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView
+from django.views.generic.list import ListView
 
 from products.models import Basket
 from orders.forms import OrderCreateForm
@@ -82,20 +84,30 @@ def stripe_webhook_view(request):
     return HttpResponse(HTTPStatus.OK)
 
 
-class OrderTemplateView(TemplateView):
+class OrderDetailView(DetailView):
     template_name = 'orders/order.html'
+    model = Order
 
     def get_context_data(self, **kwargs):
-        context = super(OrderTemplateView, self).get_context_data()
-        context['title'] = 'Store - Order'
+        context = super(OrderDetailView, self).get_context_data(**kwargs)
+        context['title'] = f'Store - Order №{self.object.id}'
+        return context
 
 
-class OrdersTemplateView(TemplateView):
+class OrdersListView(ListView):
     template_name = 'orders/orders.html'
+    queryset = Order.objects.all()
+    ordering = ('-id')
+
+    def get_queryset(self):
+        queryset = super(OrdersListView, self).get_queryset()
+        return queryset.filter(initiator=self.request.user)
+
 
     def get_context_data(self, **kwargs):
-        context = super(OrdersTemplateView, self).get_context_data()
+        context = super(OrdersListView, self).get_context_data()
         context['title'] = 'Store - Orders'
+        return context
 
 
 class SuccessTemplateView(TemplateView):
