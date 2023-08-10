@@ -20,6 +20,7 @@ from django.urls import include, path
 
 from orders.views import stripe_webhook_view
 from products.views import IndexView
+from django.views.generic.base import RedirectView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -29,6 +30,7 @@ urlpatterns = [
     path('accounts/', include('allauth.urls')),
     path('orders/', include('orders.urls', namespace='orders')),
     path('stripe_webhooks', stripe_webhook_view, name='stripe_webhook'),
+
 ]
 
 if settings.DEBUG:
