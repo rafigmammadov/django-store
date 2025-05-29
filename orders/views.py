@@ -38,10 +38,12 @@ class CreateOrderTemplateView(CreateView):
             line_items=line_items,
             metadata={'order_id': self.object.id},
             mode='payment',
-            success_url=f"{settings.DOMAIN_NAME}{reverse('orders:success')}",
-            cancel_url=f"{settings.DOMAIN_NAME}{reverse('orders:cancel')}")
-
+            success_url=f"{settings.DOMAIN_NAME}{reverse('orders:success')}?order_id={self.object.id}",
+            cancel_url=f"{settings.DOMAIN_NAME}{reverse('orders:cancel')}"
+        )
         return HttpResponseRedirect(checkout_session.url, HTTPStatus.SEE_OTHER)
+
+
 
     def get_context_data(self, **kwargs):
         context = super(CreateOrderTemplateView, self).get_context_data()
@@ -88,8 +90,20 @@ class OrderDetailView(DetailView):
     model = Order
 
     def get_context_data(self, **kwargs):
-        context = super(OrderDetailView, self).get_context_data(**kwargs)
-        context['title'] = f'Store - Order №{self.object.id}'
+        context = super().get_context_data(**kwargs)
+        order = self.object
+        if order.basket_history and order.basket_history.get('purchased_items'):
+            items = order.basket_history['purchased_items']
+            total = order.basket_history.get('total_sum', 0)
+        else:
+            # fallback if no basket_history
+            baskets = Basket.objects.filter(user=order.initiator)
+            items = [basket.de_json() for basket in baskets]
+            total = baskets.total_sum()
+
+        context['order_items'] = items
+        context['total'] = total
+        context['title'] = f'Store - Order №{order.id}'
         return context
 
 
@@ -113,8 +127,32 @@ class SuccessTemplateView(TemplateView):
     template_name = 'orders/success.html'
 
     def get_context_data(self, **kwargs):
-        context = super(SuccessTemplateView, self).get_context_data()
+        context = super().get_context_data(**kwargs)
+        order_id = self.request.GET.get('order_id')
+        order = None
+        if order_id:
+            try:
+                order = Order.objects.get(pk=order_id)
+            except Order.DoesNotExist:
+                order = None
+
+        if order and order.basket_history and order.basket_history.get('purchased_items'):
+            items = order.basket_history['purchased_items']
+            total = order.basket_history.get('total_sum', 0)
+        elif order:
+            # Show current basket as fallback
+            baskets = Basket.objects.filter(user=order.initiator)
+            items = [basket.de_json() for basket in baskets]
+            total = baskets.total_sum()
+        else:
+            items = []
+            total = 0
+
+        context['order'] = order
+        context['order_items'] = items
+        context['total'] = total
         context['title'] = 'Store - The successful order'
+        return context
 
 
 class CanceledTemplateView(TemplateView):

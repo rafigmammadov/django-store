@@ -1,44 +1,58 @@
 {% extends 'products/base.html' %}
 {% load static humanize %}
 
+{% block css %}
+    <link href="{% static 'vendor/css/orders.css' %}" rel="stylesheet">
+{% endblock %}
 
-    <!-- Custom styles for this template -->
-    {% block css %}
-        <link href="{% static 'vendor/css/orders.css' %}" rel="stylesheet">
-    {% endblock %}
-
-
-<!-- Page Content -->
 {% block content %}
 <section>
     <div class="container pt-5">
         <div class="text-center mt-5">
-            <h1>Order №{{ object.id }}</h1>
-            <div class="orders mt-5">
-                <table class="table">
-                    <thead>
-                    <tr>
-                        <th scope="col">Name</th>
-                        <th scope="col">Quantity</th>
-                        <th scope="col">Price</th>
-                        <th scope="col">Total Price</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {% for purchased_item in object.basket_history.purchased_items  %}
+            <h1>Thank you for your order!</h1>
+
+            {% if order %}
+                <h2>Order #{{ order.id }} was successfully processed.</h2>
+
+                <p><strong>Name:</strong> {{ order.first_name }} {{ order.last_name }}</p>
+                <p><strong>Email:</strong> {{ order.email }}</p>
+                <p><strong>Address:</strong> {{ order.address }}</p>
+
+                <hr>
+
+                <h3>Order Items:</h3>
+                {% if order_items %}
+                    <table class="table">
+                        <thead>
                         <tr>
-                            <th scope="row">
-                                {{ purchased_item.product_name }}
-                            </th>
-                            <td>{{ purchased_item.quantity }}</td>
-                            <td>{{ purchased_item.price | intcomma }} $</td>
-                            <td>{{ purchased_item.sum| intcomma }} $</td>
+                            <th scope="col">Name</th>
+                            <th scope="col">Quantity</th>
+                            <th scope="col">Price</th>
+                            <th scope="col">Subtotal</th>
                         </tr>
-                    {% endfor %}
-                    </tbody>
-                </table>
-                <p class="float-right h4 mt-3">Total sum: {{ object.basket_history.total_sum }} $</p>
-            </div>
+                        </thead>
+                        <tbody>
+                        {% for item in order_items %}
+                            <tr>
+                                <th scope="row">{{ item.product_name }}</th>
+                                <td>{{ item.quantity }}</td>
+                                <td>{{ item.price|floatformat:2|intcomma }} $</td>
+                                <td>{{ item.sum|floatformat:2|intcomma }} $</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                {% else %}
+                    <p>No items found in this order.</p>
+                {% endif %}
+
+                <hr>
+
+                <h4>Total: {{ total|floatformat:2|intcomma }} $</h4>
+
+            {% else %}
+                <p>Order details not found.</p>
+            {% endif %}
         </div>
     </div>
 </section>

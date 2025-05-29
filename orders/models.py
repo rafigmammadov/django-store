@@ -33,6 +33,7 @@ class Order(models.Model):
 
     def update_after_payment(self):
         baskets = Basket.objects.filter(user=self.initiator)
+        print(f"Found {baskets.count()} basket items for user {self.initiator}")
         self.status = self.PAID
         self.basket_history = {
             'purchased_items': [basket.de_json() for basket in baskets],
@@ -40,3 +41,11 @@ class Order(models.Model):
         }
         baskets.delete()
         self.save()
+        print(f"Order {self.id} updated and basket deleted")
+
+
+    def get_total_sum(self):
+        return self.basket_history.get('total_sum', 0)
+
+    def get_purchased_items(self):
+        return self.basket_history.get('purchased_items', [])

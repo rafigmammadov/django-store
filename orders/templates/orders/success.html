@@ -2,42 +2,47 @@
 {% load static %}
 
 {% block title %}
-<title> Store - Order</title>
+<title>Store - Order Success</title>
 {% endblock %}
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="utf-8"/>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
-    <meta name="description" content=""/>
-    <meta name="author" content=""/>
-    <title>Store - Thanks for your order!</title>
-    <link href="{% static 'vendor/css/auth.css' %}" rel="stylesheet"/>
-</head>
-<body class="bg-primary">
-<div id="layoutAuthentication">
-    <div id="layoutAuthentication_content">
-        <main>
-            <div class="container">
-                <div class="row justify-content-center">
-                    <div class="col-lg-5">
-                        <div class="card shadow-lg border-0 rounded-lg mt-5">
-                            <div class="card-header">
-                                <h3 class="text-center font-weight-light my-4">Thank you for the order!</h3>
-                            </div>
-                            <div class="card-body text-center">
-                                <h4>
-                                    Your order has been successfully created.
-                                </h4>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </main>
-    </div>
+{% block content %}
+<div class="container mt-5">
+    <h1>Thank you for your order!</h1>
+
+    {% if order %}
+        {% if order.status == 1 %}
+            <h2>Order #{{ order.id }} was successfully processed.</h2>
+        {% else %}
+            <h2>Order #{{ order.id }} is incomplete.</h2>
+        {% endif %}
+
+        <p><strong>Name:</strong> {{ order.first_name }} {{ order.last_name }}</p>
+        <p><strong>Email:</strong> {{ order.email }}</p>
+        <p><strong>Address:</strong> {{ order.address }}</p>
+
+        <hr>
+        <h3>Order Items:</h3>
+        <ul>
+            {% if order.basket_history.purchased_items %}
+                {% for item in order.basket_history.purchased_items %}
+                    <li>
+                        <strong>{{ item.product_name }}</strong> —
+                        Quantity: {{ item.quantity }} —
+                        Price: ${{ item.price }} —
+                        Subtotal: ${{ item.sum }}
+                    </li>
+                {% endfor %}
+            {% else %}
+                <li>No items found in this order.</li>
+            {% endif %}
+        </ul>
+
+        <hr>
+        <h4>Total: ${{ order.basket_history.total_sum }}</h4>
+
+        <a href="{% url 'products:index' %}" class="btn btn-primary mt-4">Return to Products</a>
+    {% else %}
+        <p>Order details not found.</p>
+    {% endif %}
 </div>
-</body>
-</html>
+{% endblock %}
